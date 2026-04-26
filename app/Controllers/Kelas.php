@@ -55,8 +55,8 @@ class Kelas extends BaseController
             'nama_kelas' => $this->request->getPost('nama_kelas'),
             'tingkat'    => $this->request->getPost('tingkat'),
         ]);
-        session()->setFlashdata('pesan', 'Data staf berhasil diubah.');
-        return redirect()->to('/staf');
+        session()->setFlashdata('pesan', 'Data kelas berhasil diubah.');
+        return redirect()->to('/kelas');
     }
         
     public function delete($id) {

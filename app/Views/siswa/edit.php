@@ -47,6 +47,26 @@
                 <?php endforeach; ?>
             </select>
         </div>
+         <div class="form-group">
+            <label>Jenis Kelamin</label>
+            <select name="jk" class="form-control" required>
+                <option value="">-- Pilih Jenis Kelamin --</option>
+                <option value="L" <?= ($siswa['jk'] == 'L') ? 'selected' : '' ?>>Laki-laki</option>
+                <option value="P" <?= ($siswa['jk'] == 'P') ? 'selected' : '' ?>>Perempuan</option>
+            </select>
+        </div>
+         <div class="form-group">
+            <label>Tempat Tanggal lahir</label>
+            <input type="text" name="tempat_tgl_lahir" class="form-control" value="<?= $siswa['tempat_tgl_lahir'] ?>" required>
+        </div>
+         <div class="form-group">
+            <label>Agama</label>
+            <input type="text" name="agama" class="form-control" value="<?= $siswa['agama'] ?>" required>
+        </div>
+         <div class="form-group">
+            <label>Alamat</label>
+            <input type="text" name="alamat" class="form-control" value="<?= $siswa['alamat'] ?>" required>
+        </div>
 
         <div style="margin-top: 30px;">
             <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan Perubahan</button>

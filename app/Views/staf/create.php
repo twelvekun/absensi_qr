@@ -22,7 +22,7 @@
     <form action="<?= base_url('staf/store') ?>" method="post">
         <div class="form-group">
             <label>NIP</label>
-            <input type="text" name="nip" class="form-control" placeholder="Masukkan NIP" required autofocus>
+            <input type="text" name="nip_staf" class="form-control" placeholder="Masukkan NIP" required autofocus>
         </div>
         
         <div class="form-group">

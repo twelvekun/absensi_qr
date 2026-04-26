@@ -18,12 +18,17 @@
     th, td { padding: 12px 15px; border-bottom: 1px solid #eee; text-align: left;}
     th { background-color: #17a2b8; color: white; font-weight: 600; text-transform: uppercase; font-size: 12px;}
     .time-badge { background: #e9ecef; padding: 4px 8px; border-radius: 4px; font-weight: bold; color: #333; font-family: monospace; font-size: 13px;}
+    .btn { padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s;}
+    .btn-warning { background-color: #ffc107; color: white; }
+    .btn-warning:hover { background-color: #e0a800; color: white;   }
+    .btn-danger { background-color: #dc3545; color: white; }    
+    .btn-danger:hover { background-color: #c82333; color: white; } 
 </style>
 
 <div class="card">
     <div class="header-action">
         <h3 style="margin: 0; color: #333;"><i class="fas fa-user-graduate"></i> Data Absensi Siswa</h3>
-        <button class="btn-filter" style="background: #4c9a2a;"><i class="fas fa-print"></i> Cetak PDF</button>
+       <a href="<?= base_url('laporan/cetakPdfSiswa?tanggal=' . $filter_tanggal . '&id_kelas=' . $filter_kelas) ?>" target="_blank" class="btn-filter" style="background: #4c9a2a; text-decoration: none; display: inline-block; color: white;"><i class="fas fa-print"></i> Cetak PDF</a>
     </div>
 
     <form action="<?= base_url('laporan/siswa') ?>" method="GET" class="filter-box">
@@ -62,6 +67,9 @@
                 <th>Kelas</th>
                 <th style="text-align: center;">Jam Masuk</th>
                 <th style="text-align: center;">Jam Pulang</th>
+                <th style="text-align: center;">Status Kehadiran</th>
+                <th style="text-align: center;">Keterangan</th>
+                <th style="text-align: center;">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -76,6 +84,11 @@
                 <td style="text-align: center;">
                     <?= (!empty($l['pulang']) && $l['pulang'] != '00:00:00') ? '<span class="time-badge"><i class="fas fa-sign-out-alt" style="color: #dc3545;"></i> '.$l['pulang'].'</span>' : '<span style="color:#dc3545; font-size:12px;">Belum Pulang</span>'; ?>
                 </td>
+                <td style="text-align: center;"><?= $l['status_kehadiran']; ?></td>
+                <td style="text-align: center;"><?= !empty($l['keterangan']) ? $l['keterangan'] : '-'; ?></td>
+                <td style="text-align: center; gap: 5px; display: flex; justify-content: center;">
+                    <a href="<?= base_url('laporan/edit/' . $l['no_absen']) ?>" class="btn btn-warning" title="Edit"><i class="fas fa-edit"></i> Edit</a>
+                    <a href="<?= base_url('absensi/delete/' . $l['no_absen']) ?>" class="btn btn-danger" style="background:#dc3545;" onclick="return confirm('Yakin hapus data absen ini?')"><i class="fas fa-trash"></i></a>
             </tr>
             <?php endforeach; ?>
             <?php if(empty($laporan)): ?><tr><td colspan="7" style="text-align: center; padding: 20px;">Data tidak ditemukan.</td></tr><?php endif; ?>

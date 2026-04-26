@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\SiswaModel;
 use App\Models\GuruModel;
 use App\Models\KelasModel;
+use App\Models\StafModel;
 
 // Import library Endroid v5
 use Endroid\QrCode\QrCode;
@@ -16,11 +17,13 @@ class GenerateQr extends BaseController
     protected $siswaModel;
     protected $guruModel;
     protected $kelasModel;
+    protected $stafModel;
 
     public function __construct() {
         $this->siswaModel = new SiswaModel();
         $this->guruModel  = new GuruModel();
         $this->kelasModel = new KelasModel();
+        $this->stafModel = new StafModel();
     }
 
     // 1. HALAMAN UTAMA (Tabel dan Filter)
@@ -50,6 +53,10 @@ class GenerateQr extends BaseController
         } elseif ($jenis == 'guru') {
             $data['data_list'] = $this->guruModel->findAll();
         }
+        elseif ($jenis == 'staf') {
+            $data['data_list'] = $this->stafModel->findAll();
+        }
+            // (Nanti kamu bisa tambahkan logika untuk mengambil data staf di sini jika sudah siap)
         // (Nanti kamu bisa tambah elseif ($jenis == 'staf') jika tabel staf sudah siap)
 
         return view('qrcode/index', $data);
@@ -80,8 +87,17 @@ class GenerateQr extends BaseController
                 'file_name'  => 'QR_Guru_' . $guru['nuptk']
             ];
         }
+        elseif ($jenis == 'staf') {
+            $staf    = $this->stafModel->find($id);
+            $data_qr = $staf['nip_staf'];
+            $profil  = [
+                'identitas'  => 'NIP: ' . $staf['nip_staf'],
+                'nama'       => $staf['nama_staf'],
+                'keterangan' => 'Staf / Tenaga Kependidikan',
+                'file_name'  => 'QR_Staf_' . $staf['nip_staf']
+            ];
+        }
 
-        // --- IMPLEMENTASI ALGORITMA REED-SOLOMON VERSI 5 ---
         $qrCode = new QrCode(
             data: $data_qr,
             encoding: new Encoding('UTF-8'),

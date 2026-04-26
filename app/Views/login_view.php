@@ -30,7 +30,7 @@
         /* Bagian kiri untuk gambar ilustrasi/sekolah */
         .login-left {
             /* Menggunakan gambar ilustrasi gedung sekolah dari Unsplash sebagai contoh */
-            background: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80') center/cover;
+            background: url('assets/img/login-left.jpeg') center/cover;
             width: 50%;
             position: relative;
         }

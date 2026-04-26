@@ -35,6 +35,26 @@
                 <span class="info-label">Tingkat / Kelas</span>
                 <span class="info-value"><?= $siswa['tingkat'] ?> - <?= $siswa['nama_kelas'] ?></span>
             </div>
+            <div class="info-row">
+                <span class="info-label">Nisn</span>
+                <span class="info-value"><?= $siswa['nisn'] ?></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Jenis Kelamin</span>
+                <span class="info-value"><?= $siswa['jk'] ?></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Tempat Tgl Lahir</span>
+                <span class="info-value"><?= $siswa['tempat_tgl_lahir'] ?></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Agama</span>
+                <span class="info-value"><?= $siswa['agama'] ?></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Alamat</span>
+                <span class="info-value"><?= $siswa['alamat'] ?></span>
+            </div>
         </div>
         
         <a href="<?= base_url('siswa') ?>" class="btn btn-back"><i class="fas fa-arrow-left"></i> Kembali ke Data Siswa</a>

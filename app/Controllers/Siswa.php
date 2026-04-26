@@ -36,8 +36,13 @@ class Siswa extends BaseController
     public function store() {
         $this->siswaModel->save([
             'nis'          => $this->request->getPost('nis'),
+            'nisn'         => $this->request->getPost('nisn'),  
             'nama_lengkap' => $this->request->getPost('nama_lengkap'),
             'id_kelas'     => $this->request->getPost('id_kelas'),
+            'jk'           => $this->request->getPost('jk'),
+            'tempat_tgl_lahir' => $this->request->getPost('tempat_tgl_lahir'),
+            'agama'        => $this->request->getPost('agama'),
+            'alamat'       => $this->request->getPost('alamat'),
         ]);
         session()->setFlashdata('pesan', 'Data siswa berhasil ditambahkan.');
         return redirect()->to('/siswa');
@@ -62,8 +67,13 @@ class Siswa extends BaseController
     public function update($id) {
         $this->siswaModel->update($id, [
             'nis'          => $this->request->getPost('nis'),
+            'nisn'         => $this->request->getPost('nisn'),
             'nama_lengkap' => $this->request->getPost('nama_lengkap'),
             'id_kelas'     => $this->request->getPost('id_kelas'),
+            'jk'           => $this->request->getPost('jk'),
+            'tempat_tgl_lahir' => $this->request->getPost('tempat_tgl_lahir'),
+            'agama'        => $this->request->getPost('agama'),
+            'alamat'       => $this->request->getPost('alamat'),
         ]);
         session()->setFlashdata('pesan', 'Data siswa berhasil diubah.');
         return redirect()->to('/siswa');

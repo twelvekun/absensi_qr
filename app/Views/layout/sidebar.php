@@ -4,6 +4,9 @@
         <h2>Absensi Digital</h2>
         <p>SMP Hasyim Asy'ari</p>
     </div>
+    
+    <?php $role = session()->get('role'); ?>
+
     <ul class="sidebar-menu">
         <li>
             <a href="<?= base_url('dashboard') ?>" class="<?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
@@ -46,19 +49,28 @@
         </li>
 
         <div class="menu-label">Laporan</div>
-<li>
-    <a href="<?= base_url('laporan/siswa') ?>" class="<?= (uri_string() == 'laporan/siswa') ? 'active' : '' ?>">
-        <i class="fas fa-user-graduate"></i> <span>Absensi Siswa</span>
-    </a>
-</li>
-<li>
-    <a href="<?= base_url('laporan/guru') ?>" class="<?= (uri_string() == 'laporan/guru') ? 'active' : '' ?>">
-        <i class="fas fa-chalkboard-teacher"></i> <span>Absensi Guru & Staf</span>
-    </a>
-</li>
         <li>
-            <a href="#">
-                <i class="fas fa-user-shield"></i> <span>Manajemen Admin</span>
+            <a href="<?= base_url('laporan/siswa') ?>" class="<?= (uri_string() == 'laporan/siswa') ? 'active' : '' ?>">
+                <i class="fas fa-user-graduate"></i> <span>Absensi Siswa</span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= base_url('laporan/guru') ?>" class="<?= (uri_string() == 'laporan/guru') ? 'active' : '' ?>">
+                <i class="fas fa-chalkboard-teacher"></i> <span>Absensi Guru & Staf</span>
+            </a>
+        </li>
+        
+        <?php if ($role == 'Superadmin'): ?>
+            <li>
+                <a href="<?= base_url('admin') ?>" class="<?= (strpos(uri_string(), 'admin') !== false) ? 'active' : '' ?>">
+                    <i class="fas fa-user-shield"></i> <span>Manajemen Admin</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        
+        <li>
+            <a href="<?= base_url('auth/logout') ?>">
+                <i class="fas fa-sign-out-alt"></i> <span>Keluar</span>
             </a>
         </li>
     </ul>

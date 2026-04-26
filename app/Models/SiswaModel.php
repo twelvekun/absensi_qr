@@ -6,7 +6,9 @@ class SiswaModel extends Model
 {
     protected $table = 'siswa';
     protected $primaryKey = 'id_siswa';
-    protected $allowedFields = ['nis', 'nama_lengkap', 'id_kelas'];
+    protected $allowedFields = [
+        'nis', 'nisn', 'nama_lengkap', 'jk', 'tempat_tgl_lahir', 'agama', 'alamat', 'id_kelas'
+    ];
 
     // Fungsi ini sekarang bisa mengambil semua data, atau satu data jika $id diisi
     public function getSiswaWithKelas($id = false)

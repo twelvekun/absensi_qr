@@ -4,18 +4,20 @@ namespace App\Controllers;
 use App\Models\AbsensiModel;
 use App\Models\SiswaModel;
 use App\Models\GuruModel;
-// use App\Models\StafModel; // (Aktifkan ini jika Anda sudah membuat StafModel)
+use App\Models\StafModel; 
 
 class Absensi extends BaseController
 {
     protected $absensiModel;
     protected $siswaModel;
     protected $guruModel;
+    protected $stafModel;
 
     public function __construct() {
         $this->absensiModel = new AbsensiModel();
         $this->siswaModel = new SiswaModel();
         $this->guruModel = new GuruModel();
+        $this->stafModel = new StafModel();
     }
 
     // 1. Menampilkan Halaman Kamera Scanner
@@ -34,22 +36,15 @@ class Absensi extends BaseController
             'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'
         ];
         $hari_ini = $daftar_hari[date('l')];
-
-        // --- MENGAMBIL ID ADMIN YANG SEDANG MENGOPERASIKAN SCANNER ---
-        // (Asumsi saat login, kamu menyimpan id_pengguna di session)
         $id_pengguna_login = session()->get('id_pengguna'); 
 
-        // ==========================================
-        // CEK 1: LOGIKA UNTUK SISWA
-        // ==========================================
+
         $siswa = $this->siswaModel->where('nis', $qr_data)->first();
         if ($siswa) {
             $cekAbsen = $this->absensiModel->where(['id_siswa' => $siswa['id_siswa'], 'tanggal' => $tanggal_hari_ini])->first();
             
             if ($cekAbsen) {
-                // Jika sudah ada data, cek apakah kolom 'pulang' kosong atau berisi '00:00:00'
                 if (empty($cekAbsen['pulang']) || $cekAbsen['pulang'] == '00:00:00') {
-                    // Pakai 'no_absen' sebagai primary key untuk mengupdate data
                     $this->absensiModel->update($cekAbsen['no_absen'], [
                         'pulang' => $waktu_sekarang
                     ]);
@@ -58,7 +53,6 @@ class Absensi extends BaseController
                     return $this->response->setJSON(['status' => 'warning', 'message' => $siswa['nama_lengkap'] . ' sudah melakukan absen Masuk dan Pulang hari ini.']);
                 }
             } else {
-                // Insert absen MASUK
                 $this->absensiModel->save([
                     'id_siswa'    => $siswa['id_siswa'],
                     'id_guru'     => null,
@@ -71,10 +65,6 @@ class Absensi extends BaseController
                 return $this->response->setJSON(['status' => 'success', 'title' => 'Absen MASUK Berhasil!', 'nama' => $siswa['nama_lengkap'], 'role' => 'Siswa']);
             }
         }
-
-        // ==========================================
-        // CEK 2: LOGIKA UNTUK GURU
-        // ==========================================
         $guru = $this->guruModel->where('nuptk', $qr_data)->first();
         if ($guru) {
             $cekAbsen = $this->absensiModel->where(['id_guru' => $guru['id_guru'], 'tanggal' => $tanggal_hari_ini])->first();
@@ -102,10 +92,34 @@ class Absensi extends BaseController
             }
         }
 
-        // ==========================================
-        // (Nanti logika Staf bisa kamu tambahkan di bawah sini mirip dengan Guru)
-        // ==========================================
+         $staf = $this->stafModel->where('nip_staf', $qr_data)->first();
+        if ($staf) {
+            $cekAbsen = $this->absensiModel->where(['id_staf' => $staf['id_staf'], 'tanggal' => $tanggal_hari_ini])->first();
+            
+            if ($cekAbsen) {
+                if (empty($cekAbsen['pulang']) || $cekAbsen['pulang'] == '00:00:00') {
+                    $this->absensiModel->update($cekAbsen['no_absen'], [
+                        'pulang' => $waktu_sekarang
+                    ]);
+                    return $this->response->setJSON(['status' => 'success', 'title' => 'Absen PULANG Berhasil!', 'nama' => $staf['nama_staf'], 'role' => 'Staf']);
+                } else {
+                    return $this->response->setJSON(['status' => 'warning', 'message' => $staf['nama_staf'] . ' sudah melakukan absen Masuk dan Pulang hari ini.']);
+                }
+            } else {
+                $this->absensiModel->save([
+                    'id_siswa'    => null,
+                    'id_guru'     => null, 
+                    'id_staf'     => $staf['id_staf'],
+                    'hari'        => $hari_ini,
+                    'tanggal'     => $tanggal_hari_ini,
+                    'masuk'       => $waktu_sekarang,
+                    'id_pengguna' => $id_pengguna_login
+                ]);
+                return $this->response->setJSON(['status' => 'success', 'title' => 'Absen MASUK Berhasil!', 'nama' => $staf['nama_staf'], 'role' => 'Staf']);
+            }
+        }
 
         return $this->response->setJSON(['status' => 'error', 'message' => 'QR Code tidak terdaftar di sistem.']);
     }
+    
 }

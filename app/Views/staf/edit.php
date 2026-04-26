@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label>Nomor Induk Staf (NIP)</label>
-            <input type="text" name="nip" class="form-control" value="<?= $staf['nip_staf'] ?>" required>
+            <input type="text" name="nip_staf" class="form-control" value="<?= $staf['nip_staf'] ?>" required>
         </div>
 
         <div class="form-group">

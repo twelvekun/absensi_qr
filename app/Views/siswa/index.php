@@ -41,6 +41,7 @@
                 <th>NIS</th>
                 <th>Nama Lengkap</th>
                 <th>Kelas</th>
+                <th>Jenis Kelamin</th>
                 <th style="text-align: center;">Aksi</th>
             </tr>
         </thead>
@@ -51,6 +52,7 @@
                 <td><strong><?= $s['nis']; ?></strong></td>
                 <td><?= $s['nama_lengkap']; ?></td>
                 <td><?= $s['tingkat']; ?> - <?= $s['nama_kelas']; ?></td>
+                <td><?= $s['jk']; ?></td>
                 <td style="text-align: center; gap: 5px; display: flex; justify-content: center;">
                     <a href="<?= base_url('siswa/show/'.$s['id_siswa']) ?>" class="btn btn-info" title="Lihat Detail"><i class="fas fa-eye"></i> Detail</a>
                     <a href="<?= base_url('siswa/edit/'.$s['id_siswa']) ?>" class="btn btn-warning" title="Edit"><i class="fas fa-edit"></i> Edit</a>

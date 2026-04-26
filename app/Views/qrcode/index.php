@@ -24,7 +24,8 @@
             <select name="jenis" id="jenis_select" class="filter-input" onchange="toggleKelas()">
                 <option value="siswa" <?= ($jenis == 'siswa') ? 'selected' : '' ?>>Siswa</option>
                 <option value="guru" <?= ($jenis == 'guru') ? 'selected' : '' ?>>Guru</option>
-                </select>
+                <option value="staf" <?= ($jenis == 'staf') ? 'selected' : '' ?>>Staf</option>
+            </select>
         </div>
         
         <div class="form-group" id="kelas_container" style="<?= ($jenis != 'siswa') ? 'display:none;' : '' ?>">
@@ -38,37 +39,66 @@
                 <?php endforeach; ?>
             </select>
         </div>
-
         <div class="form-group">
             <button type="submit" class="btn-filter"><i class="fas fa-search"></i> Cari Data</button>
         </div>
     </form>
 
+    <?php 
+        // Logika untuk menentukan Label Header Tabel
+        $label_identitas = 'NIS';
+        $label_keterangan = 'Kelas';
+        if ($jenis == 'guru') { $label_identitas = 'NUPTK'; $label_keterangan = 'Keterangan'; }
+        if ($jenis == 'staf') { $label_identitas = 'NIP / ID'; $label_keterangan = 'Keterangan'; }
+    ?>
+
     <table>
         <thead>
             <tr>
                 <th>No</th>
-                <th><?= ($jenis == 'siswa') ? 'NIS' : 'NUPTK' ?></th>
+                <th><?= $label_identitas ?></th>
                 <th>Nama Lengkap</th>
-                <th><?= ($jenis == 'siswa') ? 'Kelas' : 'Keterangan' ?></th>
+                <th><?= $label_keterangan ?></th>
                 <th style="text-align: center;">Aksi</th>
             </tr>
         </thead>
         <tbody>
             <?php $i = 1; foreach($data_list as $row): ?>
+            
+            <?php 
+                // Logika pemetaan data agar HTML tetap bersih
+                if ($jenis == 'siswa') {
+                    $identitas = $row['nis'];
+                    $nama = $row['nama_lengkap'];
+                    $keterangan = $row['nama_kelas'];
+                    $id_row = $row['id_siswa'];
+                } elseif ($jenis == 'guru') {
+                    $identitas = $row['nuptk'];
+                    $nama = $row['nama_guru'];
+                    $keterangan = 'Guru';
+                    $id_row = $row['id_guru'];
+                } elseif ($jenis == 'staf') {
+                    // Pastikan nama kolom sesuai dengan di tabel staf database kamu
+                    $identitas = $row['nip_staf']; 
+                    $nama = $row['nama_staf'];
+                    $keterangan = 'Staf Sekolah';
+                    $id_row = $row['id_staf'];
+                }
+            ?>
+
             <tr>
                 <td><?= $i++; ?></td>
-                <td><?= ($jenis == 'siswa') ? $row['nis'] : $row['nuptk'] ?></td>
-                <td><strong><?= ($jenis == 'siswa') ? $row['nama_lengkap'] : $row['nama_guru'] ?></strong></td>
-                <td><?= ($jenis == 'siswa') ? $row['nama_kelas'] : 'Guru' ?></td>
+                <td><?= $identitas ?></td>
+                <td><strong><?= $nama ?></strong></td>
+                <td><?= $keterangan ?></td>
                 <td style="text-align: center;">
-                    <?php $id_row = ($jenis == 'siswa') ? $row['id_siswa'] : $row['id_guru']; ?>
                     <a href="<?= base_url("generateqr/show/$jenis/$id_row") ?>" class="btn-generate">
                         <i class="fas fa-qrcode"></i> Generate QR
                     </a>
                 </td>
             </tr>
             <?php endforeach; ?>
+            
             <?php if(empty($data_list)): ?>
                 <tr><td colspan="5" style="text-align: center;">Data tidak ditemukan.</td></tr>
             <?php endif; ?>
@@ -77,7 +107,7 @@
 </div>
 
 <script>
-    // Fungsi untuk menyembunyikan dropdown kelas jika Guru dipilih
+    // Fungsi untuk menyembunyikan dropdown kelas jika Guru/Staf dipilih
     function toggleKelas() {
         var jenis = document.getElementById('jenis_select').value;
         var kelasContainer = document.getElementById('kelas_container');

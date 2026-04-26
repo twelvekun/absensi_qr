@@ -30,7 +30,7 @@ class Staf extends BaseController
     // 3. Memproses Form Tambah
     public function store() {
         $this->stafModel->save([
-            'nip'     => $this->request->getPost('nip'),
+            'nip_staf'     => $this->request->getPost('nip_staf'),
             'nama_staf' => $this->request->getPost('nama_staf'),
         ]);
         session()->setFlashdata('pesan', 'Data staf berhasil ditambahkan.');
@@ -46,7 +46,7 @@ class Staf extends BaseController
 
     public function update($id) {
         $this->stafModel->update($id, [
-            'nip'     => $this->request->getPost('nip'),
+            'nip_staf'     => $this->request->getPost('nip_staf'),
             'nama_staf' => $this->request->getPost('nama_staf'),
         ]);
         session()->setFlashdata('pesan', 'Data staf berhasil diubah.');
